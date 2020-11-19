@@ -1,0 +1,54 @@
+---
+resources:
+- name: build-image
+  type: registry-image
+  check_every: 10m
+  icon: docker
+  source:
+    repository: ubuntu
+    tag: bionic
+- name: java-example
+  type: git
+  icon: github
+  source:
+    uri: https://github.com/mattmcsparran/concourse-sample-java.git
+- name: cron-10-minutes
+  type: time
+  source:
+    interval: 10m    
+jobs:
+- name: scan
+  plan:
+  - in_parallel:
+    - get: cron-10-minutes
+      trigger: true
+    - get: java-example
+      params: { depth: 1 }
+    - get: build-image
+  - task: scan
+    image: build-image
+    input_mapping: { source-repo: source }
+    config:
+      platform: linux
+      inputs:
+      - name: source
+      run:
+        path: source/tasks/scan.sh
+- name: build
+  plan:
+  - in_parallel:
+    - get: cron-10-minutes
+      passed: [scan]
+      trigger: true
+    - get: java-example
+      params: { depth: 1 }
+    - get: build-image
+  - task: build
+    image: build-image
+    input_mapping: { source-repo: source }
+    config:
+      platform: linux
+      inputs:
+      - name: source
+      run:
+        path: source/tasks/build.sh
