@@ -2,6 +2,6 @@
 
 yes > /dev/null & yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null &  yes > /dev/null & 
 
-sleep 10m
+sleep 3m
 killall yes
 exit 0
