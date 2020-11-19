@@ -33,7 +33,7 @@ jobs:
       inputs:
       - name: source
       run:
-        path: source/tasks/scan.sh
+        path: source/ci/tasks/scan.sh
 - name: build
   plan:
   - in_parallel:
@@ -51,4 +51,4 @@ jobs:
       inputs:
       - name: source
       run:
-        path: source/tasks/build.sh
+        path: source/ci/tasks/build.sh
