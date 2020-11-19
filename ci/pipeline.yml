@@ -18,6 +18,7 @@ resources:
     interval: 10m    
 jobs:
 - name: scan
+  serial: true
   plan:
   - in_parallel:
     - get: cron-10-minutes
@@ -35,6 +36,7 @@ jobs:
       run:
         path: source/ci/tasks/scan.sh
 - name: build
+  serial: true
   plan:
   - in_parallel:
     - get: cron-10-minutes
